@@ -1,0 +1,68 @@
+[gd_scene load_steps=10 format=3 uid="uid://db2peephkle0i"]
+
+[ext_resource type="Shader" path="res://node_3d.gdshader" id="1_jss2l"]
+[ext_resource type="PackedScene" uid="uid://b345ltemkrjd4" path="res://cube.tscn" id="2_6ushl"]
+[ext_resource type="Script" path="res://CubeSpawner.cs" id="3_np0nc"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_p5bmf"]
+size = Vector2(50, 50)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_icr7l"]
+size = Vector3(41.9909, 0.0842522, 50.1335)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_22adl"]
+shader = ExtResource("1_jss2l")
+
+[sub_resource type="Sky" id="Sky_4v1o0"]
+sky_material = SubResource("ShaderMaterial_22adl")
+
+[sub_resource type="Environment" id="Environment_r4rbo"]
+background_mode = 2
+sky = SubResource("Sky_4v1o0")
+ambient_light_source = 3
+
+[sub_resource type="LabelSettings" id="LabelSettings_8b746"]
+
+[node name="World" type="Node3D"]
+
+[node name="CollisionPlane" type="Node3D" parent="."]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="CollisionPlane"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionPlane/StaticBody3D"]
+mesh = SubResource("PlaneMesh_p5bmf")
+skeleton = NodePath("")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CollisionPlane/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0135637, -0.00698507, 0.0620198)
+shape = SubResource("BoxShape3D_icr7l")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 2, 8)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.9897, 21.5421)
+environment = SubResource("Environment_r4rbo")
+
+[node name="Cube" parent="." instance=ExtResource("2_6ushl")]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+follow_viewport_enabled = true
+
+[node name="ProgressBar" type="ProgressBar" parent="CanvasLayer"]
+offset_left = -86.0
+offset_top = 7.0
+offset_right = -82.0
+offset_bottom = 107.0
+
+[node name="Label" type="Label" parent="."]
+offset_left = 10.0
+offset_top = 8.0
+offset_right = 101.0
+offset_bottom = 34.0
+text = "Hello there!"
+label_settings = SubResource("LabelSettings_8b746")
+
+[node name="CubeSpawner" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9, 0)
+script = ExtResource("3_np0nc")
